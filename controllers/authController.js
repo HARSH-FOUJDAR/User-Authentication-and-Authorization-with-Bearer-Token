@@ -1,52 +1,61 @@
-const UserScema = require("../models/User");
+const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const User = require("../models/User");
 
-exports.getpostauth = (req, res) => {
-  res.render("register");
-};
-
-exports.PostAuth = async (req, res) => {
+exports.registerUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({
+        message: "Email already registered",
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await User.create({
       username,
       email,
       password: hashedPassword,
     });
 
-    res.redirect("/auth/login");
+    res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
   } catch (error) {
     console.log("Register Error:", error);
-    res
-      .status(500)
-      .send("Error User Register pl again the different email and password");
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-//render login page
 
-exports.getloginUser = (req, res) => {
-  res.render("login");
-};
-
-exports.PostloginUser = async (req, res) => {
+exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    //find yser nad email
+
     const user = await User.findOne({ email });
     if (!user) {
-      return res.send("Invelid email");
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.send("Invelid password");
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    //genetare Jwt
     const token = jwt.sign(
       {
         userId: user._id,
@@ -56,22 +65,20 @@ exports.PostloginUser = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    // send the  cookies
-    res.cookie("token", token, { httpOnly: true });
-    res.redirect("/auth/profile");
+    res.status(200).json({
+      message: "Login successful",
+      token,
+    });
   } catch (error) {
-    res.status(500).send("Error Login in user");
-    console.log(error);
+    console.log("Login Error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-exports.getProfile = (req, res) => {
-  res.render("profile", { user: req.user });
-};
 
-// authController.js
-exports.logoutUser = (req, res) => {
-  res.clearCookie("token");
-  res.redirect("/auth/login");
+exports.getProfile = async (req, res) => {
+  res.status(200).json({
+    message: "Profile data",
+    user: req.user,
+  });
 };
-
