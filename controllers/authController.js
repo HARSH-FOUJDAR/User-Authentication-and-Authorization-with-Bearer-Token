@@ -75,5 +75,5 @@ exports.logoutUser = (req, res) => {
 
 
 exports.gethome=(req,res)=>{
-  res.redirect("/auth/login")
+  res.redirect("/auth/register")
 }
