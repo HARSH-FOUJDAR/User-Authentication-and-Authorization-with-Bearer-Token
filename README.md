@@ -7,8 +7,8 @@ It features register, login, JWT protected routes, and EJS based UI for simple u
 
 The app is deployed on Render and can be accessed live at:
 
- Live Demo:
-https://user-authentication-and-authorization-ngax.onrender.com/
+ Live Demo postmen:
+[https://user-authentication-and-authorization-ngax.onrender.com/](https://harsh-foujdar-7300781.postman.co/workspace/Login-Data~2df4a798-da61-4d29-838b-768d1ff2c9ce/request/49620231-c684460e-cf56-4266-abb2-8e94261782af?action=share&creator=49620231&ctx=documentation)
 
  Features
 
