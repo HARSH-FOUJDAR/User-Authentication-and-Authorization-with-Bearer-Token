@@ -72,3 +72,8 @@ exports.logoutUser = (req, res) => {
   res.clearCookie("token");
   res.redirect("/auth/login");
 };
+
+
+exports.gethome=(req,res)=>{
+  res.redirect("/auth/login")
+}
