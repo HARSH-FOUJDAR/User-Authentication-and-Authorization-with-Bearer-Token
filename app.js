@@ -20,6 +20,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routes
 const authRouter = require("./routes/authRoutes");
 app.use("/auth", authRouter); // important: prefix /auth
+app.get("/", (req, res) => {
+  res.redirect("/auth/register");
+});
 
 // DB connect
 DataBase();

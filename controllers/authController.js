@@ -20,7 +20,9 @@ exports.PostAuth = async (req, res) => {
     res.redirect("/auth/login");
   } catch (error) {
     console.log("Register Error:", error);
-    res.status(500).send("Error User Register pl again the different email and password");
+    res
+      .status(500)
+      .send("Error User Register pl again the different email and password");
   }
 };
 
@@ -73,7 +75,3 @@ exports.logoutUser = (req, res) => {
   res.redirect("/auth/login");
 };
 
-
-exports.gethome=(req,res)=>{
-  res.redirect("/auth/register")
-}

@@ -3,7 +3,7 @@ const AuthRouter = require("../controllers/authController");
 const Middleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 
-router.get("/", AuthRouter.gethome)
+
 router.post("/register", AuthRouter.PostAuth);
 router.get("/register", AuthRouter.getpostauth);
 
